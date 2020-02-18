@@ -76,5 +76,10 @@ public class BlueprintsServices {
     public Blueprint filter(Blueprint db) {
     	return frd.filter(db);
     }
-    
+    public void updatePoints(String author, String bprintname,Blueprint blue2) throws BlueprintNotFoundException{
+
+        Blueprint blue =bpp.getBlueprint(author, bprintname);
+        blue.setPoints(blue2.getPoints());
+
+    }
 }
