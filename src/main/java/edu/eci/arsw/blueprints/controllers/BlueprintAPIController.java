@@ -67,15 +67,15 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(path = "/create", method = RequestMethod.POST)
-    public ResponseEntity<?> manejadorPostRecursoAddBlueprint(@Valid @RequestBody Blueprint bluep){
+    public ResponseEntity<Blueprint> manejadorPostRecursoAddBlueprint(@Valid @RequestBody Blueprint bluep){
         try {
             //registrar dato
             InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
             bp.saveBlueprint(bluep);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<Blueprint>(HttpStatus.CREATED);
         } catch (Exception ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.FORBIDDEN);
+            return new ResponseEntity<Blueprint>((Blueprint)null,HttpStatus.FORBIDDEN);
         }
 
     }
