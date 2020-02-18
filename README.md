@@ -9,3 +9,5 @@ curl -i -X POST -HContent-Type:application/json -HAccept:application/json http:/
 ```
 
 ![](/img/2_1.png)
+![](/img/pantallaget.png)
+![](/img/pantallaLuis.png)
