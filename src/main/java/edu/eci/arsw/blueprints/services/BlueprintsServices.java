@@ -25,27 +25,26 @@ import org.springframework.stereotype.Service;
  *
  * @author hcadavid
  */
-@Service
+@Service("blueprintsServices")
 public class BlueprintsServices {
    
     @Autowired
     @Qualifier("MemoryBlueprint")
-    BlueprintsPersistence bpp;
+    BlueprintsPersistence bpp = null;
     
     @Autowired
     @Qualifier("filterredundacy")
     //@Qualifier("filtersubsampling")
     Filter frd;
-    
 
+    Set<Blueprint> blueprints = new HashSet<>();
     
-    public void addNewBlueprint(Blueprint bp){
-    	try {
-			bpp.saveBlueprint(bp);
-		} catch (BlueprintPersistenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException {
+
+        bpp.saveBlueprint(bp);
+
+		blueprints.add(bp);
+
         
     }
     

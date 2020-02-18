@@ -15,6 +15,7 @@ import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
 import edu.eci.arsw.blueprints.persistence.impl.Tuple;
+import edu.eci.arsw.blueprints.services.BlueprintsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,14 @@ import javax.validation.Valid;
 @RequestMapping(value = "/blueprints")
 public class BlueprintAPIController {
     @Autowired
-    @Qualifier("MemoryBlueprint")
+    @Qualifier("blueprintsServices")
+    BlueprintsServices bp;
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Set<Blueprint>> manejadorGetRecursoXX() {
         try {
             //obtener datos que se enviarán a través del API
-            InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
+            //InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
             return new ResponseEntity<Set<Blueprint>>(bp.getAllBlueprints(), HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
@@ -47,7 +50,7 @@ public class BlueprintAPIController {
     public ResponseEntity<Set<Blueprint>> manejadorGetRecursoAuthor(@PathVariable("author") String author) {
         try {
             //obtener datos que se enviarán a través del API
-            InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
+            //InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
             return new ResponseEntity<Set<Blueprint>>(bp.getBlueprintsByAuthor(author), HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
@@ -58,7 +61,7 @@ public class BlueprintAPIController {
     public ResponseEntity<Blueprint> manejadorGetRecursoAuthorNombre(@PathVariable("author") String author,@PathVariable("bpname") String bpname) {
         try {
             //obtener datos que se enviarán a través del API
-            InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
+            //InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
             return new ResponseEntity<Blueprint>(bp.getBlueprint(author,bpname), HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
@@ -67,17 +70,16 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(path = "/create", method = RequestMethod.POST)
-    public ResponseEntity<Blueprint> manejadorPostRecursoAddBlueprint(@Valid @RequestBody Blueprint bluep){
+    public ResponseEntity<?> manejadorPostRecursoAddBlueprint(@Valid @RequestBody Blueprint bluep){
         try {
             //registrar dato
-            InMemoryBlueprintPersistence bp = new InMemoryBlueprintPersistence();
-            bp.saveBlueprint(bluep);
-            return new ResponseEntity<Blueprint>(HttpStatus.CREATED);
+            //BlueprintsServices bp = new BlueprintsServices();
+            bp.addNewBlueprint(bluep);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<Blueprint>((Blueprint)null,HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.FORBIDDEN);
         }
-
     }
 
 
